@@ -1,3 +1,6 @@
 [submodule "PubLayNet"]
 	path = PubLayNet
-	url = https://github.com/ibm-aur-nlp/PubLayNet.git
+	url = https://github.com/Aravindkumar-Rajendran/PubLayNet.git
+[submodule "PubLayNet-IBM"]
+	path = PubLayNet-IBM
+	url = https://github.com/Aravindkumar-Rajendran/PubLayNet-IBM.git

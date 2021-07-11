@@ -13,7 +13,7 @@ reader = easyocr.Reader(['en'])
 from pptx import Presentation
 from pptx.util import Inches, Pt
 
-prs = Presentation()
+prs = Presentation('template.pptx')
 blank_slide_layout = prs.slide_layouts[1]
 
 
@@ -101,7 +101,8 @@ def create_pptx(images):
     image = torch.squeeze(image, 0).permute(1, 2, 0).mul(255).numpy().astype(np.uint8)
 
     results = []
-
+    titles = []
+    texts = []
     with open('OCR.txt', "a+") as file:
         for pred in prediction:
             for idx, mask in enumerate(pred['masks']):
@@ -130,6 +131,10 @@ def create_pptx(images):
                     file.writelines(result[0][1])
                     file.write("\n")
                     results.append((box, score, label, result[0][1]))
+                    if label == 'title':
+                        titles.append(''.join([i for i in result[0][1] if not (i.isdigit() or i in [',', '.'])]))
+                    else:
+                        texts.append(''.join([i for i in result[0][1] if not (i.isdigit() or i in [',', '.'])]))
                 else:
                     results.append((box, score, label, file_name))
 
@@ -214,7 +219,7 @@ def create_pptx(images):
 
     output_images = OUTPUT_PATH+'/{}'.format(os.path.basename(image_path))
 
-    return output_images, file_name
+    return output_images, file_name, titles, texts
 
 
 

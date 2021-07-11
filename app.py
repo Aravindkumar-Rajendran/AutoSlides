@@ -8,6 +8,8 @@ import os
 from autoslide import create_pptx
 import base64
 from subprocess import call
+from search_videos import search
+from generate_questions import gen_quest
 
 
 if not os.path.exists("images"): os.mkdir("images")
@@ -53,7 +55,7 @@ def main():
                 with open(file_name, "wb") as buffer:
                     shutil.copyfileobj(uploaded_file, buffer)
                 images = convert_to_image(file_name, start_page, end_page)
-                img_path, file_path = create_pptx(images)
+                img_path, file_path, titles, texts = create_pptx(images)
                 print(img_path)
 
                 st.image(img_path)
@@ -69,12 +71,46 @@ def main():
                     pdf_display = F'<embed src="data:application/pdf;base64,{base64_pdf}" width="1000" height="1000" type="application/pdf">'
                     st.markdown(pdf_display, unsafe_allow_html=True)
                 
+
                 with open(file_path,"rb") as f:
                     b64_pptx = base64.b64encode(f.read()).decode('utf-8')
-
-                download_pptx = f'<a href="data:file/pptx;base64,{b64_pptx}" download="file.pptx">Download Slides</a>'    
+                download_pptx = f'<a href="data:file/pptx;base64,{b64_pptx}" download="file.pptx">Download Slides as .pptx</a>'    
                 st.write("\n\n\n")
                 st.markdown(download_pptx, unsafe_allow_html=True)
+
+                videos = []
+                for title in titles:
+                    video = search(title)
+                    if video:
+                        videos.append(video[0])
+
+                print("videos", videos)
+                st.write("\n\n\n")
+                st.write("\n\n\n")
+
+                for video_id in list(set(videos)):
+                    if not video_id=='[]':
+                        # video = f'<iframe width="560" height="315" src="https://www.youtube.com/embed/{video_id}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
+                        # st.markdown(video, unsafe_allow_html=True)
+                        st.video(f'https://youtu.be/{video_id}')
+
+                st.write("\n\n\n")
+                st.write("\n\n\n")
+
+                
+                questions = []
+                for text in texts:
+                    if len(text) > 150:
+                        quest = gen_quest(text)
+                        if quest[0]:
+                            questions.append(quest[0]['questions'])
+                if questions:
+                    st.write("Generated questions: ")
+                for i, question in enumerate(questions):
+                    if question:
+                        st.write(f"Question {i+1} : {question['Question']}")
+                        st.write(f"Question {i+1} : {question['Answer']}")
+                        st.write("\n\n")
 
 
 if __name__ == '__main__':

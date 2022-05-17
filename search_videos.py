@@ -13,7 +13,7 @@ def search(query):
     os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
     api_service_name = "youtube"
     api_version = "v3"
-    developerKey = "AIzaSyDZcSD1fC_OjUKI9kmS_L0K0EZ9qEGafKk"
+    developerKey = ""
     youtube = googleapiclient.discovery.build(
         api_service_name, api_version, developerKey=developerKey)
 

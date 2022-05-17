@@ -5,3 +5,9 @@
 
 #### Models
 Download models from https://github.com/phamquiluan/PubLayNet ([link](https://drive.google.com/file/d/1Jx2m_2I1d9PYzFRQ4gl82xQa-G7Vsnsl/view?usp=sharing))
+
+
+  
+#### Demo video
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/8mMY6_9RMg8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
